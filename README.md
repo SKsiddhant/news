@@ -1,55 +1,41 @@
-# install Create react App
-`       npx create-react-app newsmania      `
+# NewsHub
 
-# Install Tailwind Css
-`       npm install -D tailwindcss postcss autoprefixer       `
-`       npx tailwindcss init -p       `
+A React + Tailwind news reader with category pages, infinite scroll and a light/dark toggle, built on [NewsAPI](https://newsapi.org).
 
-# Configure your template paths
-# Add the paths to all of your template files in your tailwind.config.js file.
+## Run
 
-`
-/** @type {import('tailwindcss').Config} */ 
-module.exports = {
-  content: [
-    "./src/**/*.{js,jsx,ts,tsx}",
-  ],
-  theme: {
-    extend: {},
-  },
-  plugins: [],
-}  
-`
+```bash
+npm install
+npm start
+```
 
-# Add the Tailwind directives to your CSS
-# Add the @tailwind directives for each of Tailwind’s layers to your ./src/index.css file.
-`
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+Without configuration the app shows **20 bundled sample articles** (paginated like the real API) so it works offline. To load live headlines:
 
-` 
+```bash
+echo "REACT_APP_NEWS_API=your_newsapi_key" > .env.local
+npm start
+```
 
-# Start your build process
-`       npm run start       `
+> `REACT_APP_*` variables are compiled into the public JavaScript bundle, so anyone who opens the site can read the key. Fine for local use; for a public deployment put a small proxy in front of NewsAPI. NewsAPI's free developer plan also only answers requests from `localhost`.
 
+## Scripts
 
-# Install the material icon 
-`       npm install @mui/icons-material @mui/material @emotion/styled @emotion/react        `
-if any error then
-`   npm install @mui/material @emotion/react @emotion/styled    `
-`   npm install @mui/material @mui/styled-engine-sc styled-components    `
-`   npm install @mui/icons-material     `
+| | |
+|---|---|
+| `npm start` | dev server |
+| `npm test` | unit tests (Jest + Testing Library) |
+| `npm run build` | production build (uses relative paths, so it works on any sub-path) |
+| `npm run deploy` | publish `build/` to GitHub Pages with `gh-pages` |
 
-# Install the React Infinite Scroll
-`       npm install --save react-infinite-scroll-component       `
+Routing uses `HashRouter` (`/#/sports`), so deep links keep working on static hosting such as GitHub Pages.
 
-# Install react router dom
-`       npm install --save react-router-dom         `
+## Project structure
 
-# install --save react-top-loading-bar
-`       npm install --save react-top-loading-bar      `
-
-#  Thank You
-# Made By Harsh Kumar
-# Github @H4rshSingh
+```
+src/
+├── api.js                   fetchHeadlines(): NewsAPI or bundled samples
+├── App.js                   routes + theme state
+└── Component/
+    ├── Navbar.js  News.js  NewsSection.js  Spinner.js
+    └── assets/general.json  sample articles
+```
